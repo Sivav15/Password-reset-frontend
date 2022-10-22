@@ -9,6 +9,7 @@ function ForgetPassword() {
   let navigate = useNavigate();
   let [valid, setvalid] = useState("");
   let [loading, setloading] = useState(false);
+  let [resend, setResend] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -29,7 +30,10 @@ function ForgetPassword() {
     onSubmit: async (values) => {
       try {
         setloading(true);
+        setResend(true);
+
         let user = await axios.post(`${env.api}/reset-sendmail`, values);
+
         if (user.data.statusCode === 200) {
           setvalid(user.data.message);
           setloading(false);
@@ -71,24 +75,21 @@ function ForgetPassword() {
             {formik.touched.email && formik.errors.email ? (
               <div className="error"> {formik.errors.email}</div>
             ) : null}
-             {formik.touched.email && formik.errors.email ? null :  (
+            {formik.touched.email && formik.errors.email ? null : (
               <div className="error">{valid}</div>
             )}
           </div>
 
-          
           <div className="mb-3 d-flex justify-content-center">
             <button type="submit" className="btn" disabled={!formik.isValid}>
-              
               {loading ? (
-              <img
-                src={load}
-                alt="load"
-                className="spinner"
-              />
-            ) : " Reset Password "}
+                <img src={load} alt="load" className="spinner" />
+              ) : resend ? (
+                "Resend mail"
+              ) : (
+                "Send mail"
+              )}
             </button>
-            
           </div>
           <div
             className="mt-3 "
