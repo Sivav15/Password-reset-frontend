@@ -4,10 +4,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { env } from "./config";
 import load from "../loading2.svg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ForgetPassword() {
   let navigate = useNavigate();
-  let [valid, setvalid] = useState("");
   let [loading, setloading] = useState(false);
   let [resend, setResend] = useState(false);
 
@@ -30,18 +31,18 @@ function ForgetPassword() {
     onSubmit: async (values) => {
       try {
         setloading(true);
-       
+        
 
         let user = await axios.post(`${env.api}/reset-sendmail`, values);
 
         if (user.data.statusCode === 200) {
+          toast.success(user.data.message);
           setResend(true);
-          setvalid(user.data.message);
           setloading(false);
         }
 
         if (user.data.statusCode === 401) {
-          setvalid(user.data.message);
+          toast.warn(user.data.message);
           setloading(false);
         }
       } catch (error) {
@@ -76,9 +77,7 @@ function ForgetPassword() {
             {formik.touched.email && formik.errors.email ? (
               <div className="error"> {formik.errors.email}</div>
             ) : null}
-            {formik.touched.email && formik.errors.email ? null : (
-              <div className="error">{valid}</div>
-            )}
+           
           </div>
 
           <div className="mb-3 d-flex justify-content-center">
@@ -103,6 +102,7 @@ function ForgetPassword() {
             <span onClick={() => navigate("/")}>Back to login</span>
           </div>
         </form>
+        <ToastContainer />
       </div>
     </>
   );
