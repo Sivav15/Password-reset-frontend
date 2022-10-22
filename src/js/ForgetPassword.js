@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { env } from "./config";
-import load from "../loading1.svg";
+import load from "../loading2.svg";
 
 function ForgetPassword() {
   let navigate = useNavigate();
@@ -79,15 +79,16 @@ function ForgetPassword() {
           
           <div className="mb-3 d-flex justify-content-center">
             <button type="submit" className="btn" disabled={!formik.isValid}>
-              Reset Password
-            </button>{" "}
-            {loading ? (
+              
+              {loading ? (
               <img
                 src={load}
                 alt="load"
-                style={{ width: "3rem", paddingLeft: "10px" }}
+                className="spinner"
               />
-            ) : null}
+            ) : " Reset Password "}
+            </button>
+            
           </div>
           <div
             className="mt-3 "

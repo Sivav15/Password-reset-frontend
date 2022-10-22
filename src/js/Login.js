@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/Login.css";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -6,9 +6,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { env } from "./config";
+import load from "../loading2.svg";
 
 function Login() {
   let navigate = useNavigate();
+  let [loading, setloading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -32,9 +34,11 @@ function Login() {
 
     onSubmit: async (values) => {
       try {
+        setloading(true)
         let user = await axios.post(`${env.api}/login`, values);
         console.log(user);
         if (user.data.statusCode === 201) {
+          setloading(false)
           window.localStorage.setItem("Token", user.data.token);
           window.localStorage.setItem("name", user.data.user.name);
           toast.success(user.data.message);
@@ -44,6 +48,7 @@ function Login() {
         }
 
         if (user.data.statusCode === 401) {
+          setloading(false)
           toast.warn(user.data.message);
         }
       } catch (error) {
@@ -104,7 +109,15 @@ function Login() {
           </div>
 
           <button type="submit" className="btn" disabled={!formik.isValid}>
-            Login
+          {loading ? (
+              <img
+                src={load}
+                alt="load"
+                className="spinner"
+                
+              />
+            ) : "Login"}
+            
           </button>
           <div className="mt-3 new_user">
             <span>

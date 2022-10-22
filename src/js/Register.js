@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { env } from "./config";
+import load from "../loading2.svg";
 
 function Register() {
   let navigate = useNavigate();
+  let [loading, setloading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -56,10 +58,10 @@ function Register() {
       }
 
 
-      if (values.conformPassword.length === 0) {
-        errors.conformPassword = "Enter your conform password";
-      }else if (values.conformPassword !== values.password) {
+      if (values.conformPassword !== values.password) {
         errors.conformPassword = "Conform password does not match";
+      } else if (values.conformPassword.length === 0) {
+        errors.conformPassword = "Enter your conform password";
       }
 
       
@@ -70,14 +72,16 @@ function Register() {
     onSubmit: async (values) => {
       try {
         delete values.conformPassword;
+        setloading(true)
         let user = await axios.post(`${env.api}/register`, values);
-        console.log(user);
         if (user.data.statusCode === 201) {
+          setloading(false)
           toast.success(user.data.message);
           setTimeout(() => {
             navigate("/");
           }, 2000);
         }else{
+          setloading(false)
           toast.warn(user.data.message);
         }
       } catch (error) {
@@ -175,7 +179,14 @@ function Register() {
           </div>
 
           <button type="submit" className="btn" disabled={!formik.isValid}>
-            SignUp
+                {loading ? (
+              <img
+                src={load}
+                alt="load"
+                className="spinner"
+              />
+            ) : " SignUp "}
+
           </button>
 
           <div className="mt-3 new_user">

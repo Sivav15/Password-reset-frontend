@@ -9,6 +9,9 @@ input{
     outline: none !important;
 
 }
+button{
+    outline: none !important;
+}
 
 .containers{
     display: flex;
@@ -46,6 +49,11 @@ input{
     transform: scale(1.09);
     background-color: orangered;
     border-radius: 1rem;
+ }
+
+
+ .spinner{
+width:1.5rem ;
  }
 
 /* home components */

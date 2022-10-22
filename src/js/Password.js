@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { env } from "./config";
+import load from "../loading2.svg";
 
 function Password() {
   const params = useParams();
-
+  let [loading, setloading] = useState(false);
   let navigate = useNavigate();
 
   const formik = useFormik({
@@ -28,13 +29,16 @@ function Password() {
       } else if (values.password.length < 8) {
         errors.password = "Your password must be at least 8 characters";
       }
-      if (values.conformPassword.length === 0) {
+
+      
+      
+       if (values.conformPassword !== values.password) {
+        errors.conformPassword = "Conform password does not match";
+      } else if (values.conformPassword.length === 0) {
         errors.conformPassword = "Enter your conform password";
       }
 
-      if (values.conformPassword !== values.password) {
-        errors.conformPassword = "Conform password does not match";
-      }
+      
 
       return errors;
     },
@@ -44,16 +48,18 @@ function Password() {
         delete values.conformPassword;
         values.id = params.id;
         values.token = params.token;
-
+        setloading(true)
         let user = await axios.post(`${env.api}/password-reset`, values);
 
         if (user.data.statusCode === 201) {
+          setloading(false)
           toast.success(user.data.message);
           setTimeout(() => {
             navigate("/");
           }, 1000);
         }
         if (user.data.statusCode === 401) {
+          setloading(false)
           toast.warn(user.data.message);
           setTimeout(() => {
             navigate("/forgot-password");
@@ -109,7 +115,14 @@ function Password() {
 
           <div  className=" d-flex justify-content-center mt-4 mb-3">
             <button type="submit" className="btn" disabled={!formik.isValid}>
-              Change Password
+            {loading ? (
+              <img
+                src={load}
+                alt="load"
+                className="spinner"
+              />
+            ) : " Change Password "}
+              
             </button>
           </div>
         </form>
