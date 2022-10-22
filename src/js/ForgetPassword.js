@@ -30,11 +30,12 @@ function ForgetPassword() {
     onSubmit: async (values) => {
       try {
         setloading(true);
-        setResend(true);
+       
 
         let user = await axios.post(`${env.api}/reset-sendmail`, values);
 
         if (user.data.statusCode === 200) {
+          setResend(true);
           setvalid(user.data.message);
           setloading(false);
         }
