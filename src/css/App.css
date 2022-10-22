@@ -1,0 +1,88 @@
+/* common css for all pages */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+input{
+    outline: none !important;
+
+}
+
+.containers{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    height: 100vh;
+    background-image: url("../asset/img2.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 100%;  
+}
+.form{
+    position: relative;
+        min-width: 30%;
+        margin: 0 auto;
+        background-color: rgba(0,0,0,0.7);
+        padding: 20px;
+        border-radius: 25px;
+        color: white;
+        box-shadow: inset -10px -10px rgba(0,0,0,0.5);
+    }
+ .error{
+    color: red;
+    text-align: end;
+ } 
+ .over{
+    cursor: pointer;
+    transition: transform 200ms ease-in-out;
+    padding: 5px 20px;
+    color: white;
+    /* text-decoration: none !important; */
+ }  
+ .over:hover{
+    transform: scale(1.09);
+    background-color: orangered;
+    border-radius: 1rem;
+ }
+
+/* home components */
+
+.home{
+    background-color:black ;
+    height: 100vh;
+    color: white;
+}
+.logout{
+    right: 15px;
+    top: 10px;
+    position: absolute;
+    background-color: blueviolet;
+    border-radius: 1rem;
+
+}
+.wellcome_page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: aliceblue;
+    align-items: center;
+    height: 100vh;
+}
+.name{
+    color: red;
+}
+.name1{
+    color: red;
+    font-size: large;
+    font-weight: 750;
+}
+.note{
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    padding: 30px;
+}
+
